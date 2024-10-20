@@ -1,49 +1,24 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <title>Dice Roller API Test</title>
+    <title>Dice Roller Client</title>
     <style>
-        #urlInput {
-            width: 500px; 
-            padding: 10px;
-            font-size: 14px;
-        }
+        body { font-family: Arial, sans-serif; }
+        button { padding: 10px; margin: 5px; }
+        #result { margin-top: 10px; font-size: 18px; }
     </style>
-  </head>
-  <body>
-    <h1>Dice Roller API Test</h1>
-    <label for="urlInput">API Server URL:</label><br />
-    <input type="text" id="urlInput" placeholder="Enter the URL of your API server here..."><br /><br />
-    
-    <button onclick="testPing()">Test Ping</button>
-    <div id="ping-result"></div><br />
-
-    <button onclick="rollDice()">Roll Dice</button>
-    <div id="dice-result"></div><br />
-
     <script>
-        async function testPing() {
-            const url = document.getElementById("urlInput").value + "/api/ping";
-            try {
-                const response = await fetch(url);
-                const text = await response.text();
-                document.getElementById("ping-result").innerText = text;
-            } catch (error) {
-                document.getElementById("ping-result").innerText = "CORS failure or network error.";
-            }
-        }
-
         async function rollDice() {
-            const url = document.getElementById("urlInput").value + "/api/roll-dice?sides=6&rolls=3";
-            try {
-                const response = await fetch(url);
-                const json = await response.json();
-                document.getElementById("dice-result").innerText = `Rolls: ${json.results.join(", ")}`;
-            } catch (error) {
-                document.getElementById("dice-result").innerText = "CORS failure or network error.";
-            }
+            const response = await fetch('https://<your-app-name>.azurewebsites.net/api/roll?sides=6');
+            const data = await response.json();
+            document.getElementById('result').innerText = `Rolled: ${data.rollResult} (sides: ${data.sides})`;
         }
     </script>
-  </body>
+</head>
+<body>
+    <h1>Welcome to the Dice Roller Client!</h1>
+    <button onclick="rollDice()">Roll Dice</button>
+    <div id="result"></div>
+</body>
 </html>
